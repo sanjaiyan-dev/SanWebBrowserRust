@@ -1,19 +1,39 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/tauri";
+import { Button, Slide } from "@mui/material";
+import SanWrapper from "./components/Layout/Wrapper";
+import { useRecoilState } from "recoil";
+import {
+  SAN_CURRENT_THEME_DARK,
+  SAN_NAVBAR_OPEN_STATE,
+} from "./store/sanAtoms";
+import { startTransition } from "react";
+import SanjaiyanNavbar from "./components/Layout/Navbar";
+import SanAppBar from "./components/Layout/AppBar";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    setGreetMsg(await invoke("greet", { name }));
-  }
-
+  const [, setTheme] = useRecoilState(SAN_CURRENT_THEME_DARK);
+  const [sanjaiyanOpen] = useRecoilState(SAN_NAVBAR_OPEN_STATE);
+  console.log("Sanjaiyan Coming Soon :)");
   return (
-    <div className="container">
-      
-    </div>
+    <>
+      <SanWrapper>
+        <Slide direction="right" in={sanjaiyanOpen} mountOnEnter unmountOnExit>
+          <div>
+            <SanjaiyanNavbar />
+          </div>
+        </Slide>
+        <Button
+          onClick={() => {
+            startTransition(() => {
+              setTheme((prevTheme) => !prevTheme);
+            });
+          }}
+          variant="contained"
+        >
+          Change Colors
+        </Button>
+        <SanAppBar />
+      </SanWrapper>
+    </>
   );
 }
 
