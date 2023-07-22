@@ -8,30 +8,23 @@ import {
 import { startTransition } from "react";
 import SanjaiyanNavbar from "./components/Layout/Navbar";
 import SanAppBar from "./components/Layout/AppBar";
+import LayoutSan from "./components/Layout/Layout";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   const [, setTheme] = useRecoilState(SAN_CURRENT_THEME_DARK);
-  const [sanjaiyanOpen] = useRecoilState(SAN_NAVBAR_OPEN_STATE);
+
   console.log("Sanjaiyan Coming Soon :)");
   return (
     <>
       <SanWrapper>
-        <Slide direction="right" in={sanjaiyanOpen} mountOnEnter unmountOnExit>
-          <div>
-            <SanjaiyanNavbar />
-          </div>
-        </Slide>
-        <Button
-          onClick={() => {
-            startTransition(() => {
-              setTheme((prevTheme) => !prevTheme);
-            });
-          }}
-          variant="contained"
-        >
-          Change Colors
-        </Button>
-        <SanAppBar />
+        <LayoutSan>
+          <Routes>
+            <Route path="/" element={<>Home</>} />
+            <Route path="/music" element={<>Music</>} />
+            <Route path="/system" element={<>Sysytem</>} />
+          </Routes>
+        </LayoutSan>
       </SanWrapper>
     </>
   );
